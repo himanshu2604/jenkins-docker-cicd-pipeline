@@ -1,0 +1,315 @@
+---
+###############################################
+# Ansible Playbook for DevOps Environment Setup
+# Purpose: Install and configure required software
+# Target: localhost (can be modified for remote hosts)
+###############################################
+
+- name: Setup DevOps Environment for Abode Software
+  hosts: localhost
+  become: yes
+  gather_facts: yes
+  
+  vars:
+    jenkins_user: jenkins
+    jenkins_home: /var/jenkins_home
+    app_directory: /var/www/html
+    docker_group: docker
+    
+  tasks:
+    ###############################################
+    # System Update
+    ###############################################
+    - name: Update apt package cache (Debian/Ubuntu)
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+      when: ansible_os_family == "Debian"
+      tags: [update]
+    
+    - name: Update yum package cache (RedHat/CentOS)
+      yum:
+        update_cache: yes
+      when: ansible_os_family == "RedHat"
+      tags: [update]
+    
+    ###############################################
+    # Install Essential Packages
+    ###############################################
+    - name: Install essential packages (Debian/Ubuntu)
+      apt:
+        name:
+          - curl
+          - wget
+          - git
+          - vim
+          - unzip
+          - software-properties-common
+          - apt-transport-https
+          - ca-certificates
+          - gnupg
+          - lsb-release
+        state: present
+      when: ansible_os_family == "Debian"
+      tags: [packages]
+    
+    ###############################################
+    # Install Docker
+    ###############################################
+    - name: Add Docker GPG key (Debian/Ubuntu)
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+      when: ansible_os_family == "Debian"
+      tags: [docker]
+    
+    - name: Add Docker repository (Debian/Ubuntu)
+      apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        state: present
+      when: ansible_os_family == "Debian"
+      tags: [docker]
+    
+    - name: Install Docker (Debian/Ubuntu)
+      apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-compose-plugin
+        state: present
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+      tags: [docker]
+    
+    - name: Start and enable Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+      tags: [docker]
+    
+    ###############################################
+    # Install Git
+    ###############################################
+    - name: Install Git
+      package:
+        name: git
+        state: present
+      tags: [git]
+    
+    - name: Verify Git installation
+      command: git --version
+      register: git_version
+      changed_when: false
+      tags: [git]
+    
+    - name: Display Git version
+      debug:
+        msg: "Git version installed: {{ git_version.stdout }}"
+      tags: [git]
+    
+    ###############################################
+    # Install Java (Required for Jenkins)
+    ###############################################
+    - name: Install OpenJDK 11
+      apt:
+        name: openjdk-11-jdk
+        state: present
+      when: ansible_os_family == "Debian"
+      tags: [java]
+    
+    - name: Verify Java installation
+      command: java -version
+      register: java_version
+      changed_when: false
+      failed_when: false
+      tags: [java]
+    
+    ###############################################
+    # Install Maven (Optional, for Java builds)
+    ###############################################
+    - name: Install Maven
+      apt:
+        name: maven
+        state: present
+      when: ansible_os_family == "Debian"
+      tags: [maven]
+    
+    ###############################################
+    # Install Python and Pip
+    ###############################################
+    - name: Install Python3 and pip
+      apt:
+        name:
+          - python3
+          - python3-pip
+          - python3-venv
+        state: present
+      when: ansible_os_family == "Debian"
+      tags: [python]
+    
+    ###############################################
+    # Configure Docker
+    ###############################################
+    - name: Create Docker group
+      group:
+        name: "{{ docker_group }}"
+        state: present
+      tags: [docker-config]
+    
+    - name: Add Jenkins user to Docker group
+      user:
+        name: "{{ jenkins_user }}"
+        groups: "{{ docker_group }}"
+        append: yes
+      when: jenkins_user is defined
+      ignore_errors: yes
+      tags: [docker-config]
+    
+    - name: Set Docker socket permissions
+      file:
+        path: /var/run/docker.sock
+        mode: '0666'
+      tags: [docker-config]
+    
+    ###############################################
+    # Create Application Directories
+    ###############################################
+    - name: Create application directory
+      file:
+        path: "{{ app_directory }}"
+        state: directory
+        mode: '0755'
+        owner: www-data
+        group: www-data
+      tags: [directories]
+    
+    - name: Create Jenkins workspace directory
+      file:
+        path: /var/jenkins_workspace
+        state: directory
+        mode: '0755'
+      tags: [directories]
+    
+    ###############################################
+    # Install Docker Compose
+    ###############################################
+    - name: Install Docker Compose
+      get_url:
+        url: "https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-{{ ansible_system }}-{{ ansible_architecture }}"
+        dest: /usr/local/bin/docker-compose
+        mode: '0755'
+      tags: [docker-compose]
+    
+    - name: Verify Docker Compose installation
+      command: docker-compose --version
+      register: docker_compose_version
+      changed_when: false
+      tags: [docker-compose]
+    
+    ###############################################
+    # Configure Firewall (Optional)
+    ###############################################
+    - name: Install UFW firewall
+      apt:
+        name: ufw
+        state: present
+      when: ansible_os_family == "Debian"
+      tags: [firewall]
+    
+    - name: Allow SSH through firewall
+      ufw:
+        rule: allow
+        port: '22'
+        proto: tcp
+      when: ansible_os_family == "Debian"
+      tags: [firewall]
+    
+    - name: Allow Jenkins port through firewall
+      ufw:
+        rule: allow
+        port: '8080'
+        proto: tcp
+      when: ansible_os_family == "Debian"
+      tags: [firewall]
+    
+    - name: Allow HTTP through firewall
+      ufw:
+        rule: allow
+        port: '80'
+        proto: tcp
+      when: ansible_os_family == "Debian"
+      tags: [firewall]
+    
+    - name: Allow HTTPS through firewall
+      ufw:
+        rule: allow
+        port: '443'
+        proto: tcp
+      when: ansible_os_family == "Debian"
+      tags: [firewall]
+    
+    ###############################################
+    # System Optimization
+    ###############################################
+    - name: Increase file descriptor limits
+      lineinfile:
+        path: /etc/security/limits.conf
+        line: "{{ item }}"
+        create: yes
+      loop:
+        - "* soft nofile 65536"
+        - "* hard nofile 65536"
+      tags: [optimization]
+    
+    ###############################################
+    # Install Monitoring Tools (Optional)
+    ###############################################
+    - name: Install monitoring tools
+      apt:
+        name:
+          - htop
+          - iotop
+          - net-tools
+          - sysstat
+        state: present
+      when: ansible_os_family == "Debian"
+      tags: [monitoring]
+    
+  ###############################################
+  # Post-installation Tasks
+  ###############################################
+  post_tasks:
+    - name: Display installation summary
+      debug:
+        msg:
+          - "=========================================="
+          - "DevOps Environment Setup Completed!"
+          - "=========================================="
+          - "Installed Components:"
+          - "  - Docker: {{ docker_compose_version.stdout }}"
+          - "  - Git: {{ git_version.stdout }}"
+          - "  - Java: Installed"
+          - "  - Python3: Installed"
+          - "  - Maven: Installed"
+          - ""
+          - "Next Steps:"
+          - "  1. Start Jenkins container"
+          - "  2. Configure Jenkins"
+          - "  3. Create Jenkins pipeline"
+          - "  4. Setup GitHub webhooks"
+          - "=========================================="
+      tags: [summary]
+    
+    - name: Verify Docker is running
+      command: docker ps
+      register: docker_status
+      changed_when: false
+      tags: [verify]
+    
+    - name: Display Docker status
+      debug:
+        msg: "Docker is running and ready to use"
+      when: docker_status.rc == 0
+      tags: [verify]
