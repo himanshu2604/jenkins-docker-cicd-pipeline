@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Abode Software - Enterprise DevOps Solutions with Automated CI/CD Pipeline">
+    <meta name="keywords" content="DevOps, CI/CD, Docker, Jenkins, Automation">
+    <meta name="author" content="Abode Software">
+    <title>Abode Software - DevOps CI/CD Pipeline</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #3b82f6;
+            --dark-bg: #1e293b;
+            --light-bg: #f8fafc;
+            --text-dark: #0f172a;
+            --text-light: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo::before {
+            content: "🚀";
+            font-size: 2rem;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 8rem 2rem 4rem;
+            text-align: center;
+            margin-top: 70px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        /* Stats Section */
+        .stats {
+            background: var(--light-bg);
+            padding: 3rem 2rem;
+        }
+
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--text-dark);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        /* Pipeline Section */
+        .pipeline {
+            background: var(--dark-bg);
+            color: white;
+            padding: 4rem 2rem;
+        }
+
+        .pipeline-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .pipeline-steps {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+            gap: 2rem;
+        }
+
+        .pipeline-step {
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 0 auto 1rem;
+            position: relative;
+        }
+
+        .pipeline-step:not(:last-child) .step-number::after {
+            content: '→';
+            position: absolute;
+            right: -60px;
+            font-size: 2rem;
+            color: var(--accent-color);
+        }
+
+        .pipeline-step h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .pipeline-step p {
+            opacity: 0.8;
+        }
+
+        /* Tech Stack Section */
+        .tech-stack {
+            padding: 4rem 2rem;
+            background: var(--light-bg);
+        }
+
+        .tech-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .tech-item {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .tech-item:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .tech-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .tech-item h4 {
+            color: var(--text-dark);
+            font-size: 1.1rem;
+        }
+
+        /* Status Section */
+        .status {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .status-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .badge-success {
+            background: #d1fae5;
+            color: var(--success-color);
+        }
+
+        .badge-running {
+            background: #dbeafe;
+            color: var(--primary-color);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-bg);
+            color: white;
+            padding: 3rem 2rem 1rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .pipeline-step:not(:last-child) .step-number::after {
+                content: '↓';
+                right: auto;
+                bottom: -60px;
+            }
+        }
+
+        /* Build Status Indicator */
+        .build-status {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            z-index: 999;
+        }
+
+        .status-indicator {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--success-color);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">Abode Software</div>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#pipeline">Pipeline</a></li>
+                <li><a href="#tech">Tech Stack</a></li>
+                <li><a href="#status">Status</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <h1>Enterprise DevOps CI/CD Pipeline</h1>
+        <p>Automated Build, Test & Deploy with Jenkins, Docker & Ansible</p>
+        <div class="cta-buttons">
+            <a href="#pipeline" class="btn btn-primary">View Pipeline</a>
+            <a href="#features" class="btn btn-secondary">Learn More</a>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Automated</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Pipeline Stages</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">2</div>
+                <div class="stat-label">Git Branches</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Uptime</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <h2 class="section-title">Key Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🔄</div>
+                <h3>Continuous Integration</h3>
+                <p>Automatically build and test code changes with every commit to ensure quality and catch issues early.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <h3>Continuous Deployment</h3>
+                <p>Seamless deployment to production from master branch with automated testing and validation.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🐳</div>
+                <h3>Docker Containerization</h3>
+                <p>Application packaged in Docker containers for consistency across all environments.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔧</div>
+                <h3>Configuration Management</h3>
+                <p>Ansible automation for environment setup and software installation across servers.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌿</div>
+                <h3>Git Workflow</h3>
+                <p>Branch-based deployment strategy with separate workflows for development and production.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🧪</div>
+                <h3>Automated Testing</h3>
+                <p>Comprehensive test suite including health checks, accessibility tests, and log analysis.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pipeline Section -->
+    <section class="pipeline" id="pipeline">
+        <div class="pipeline-container">
+            <h2 class="section-title" style="color: white;">CI/CD Pipeline Workflow</h2>
+            <div class="pipeline-steps">
+                <div class="pipeline-step">
+                    <div class="step-number">1</div>
+                    <h3>Build</h3>
+                    <p>Checkout code and build Docker image</p>
+                </div>
+                <div class="pipeline-step">
+                    <div class="step-number">2</div>
+                    <h3>Test</h3>
+                    <p>Run automated tests and validation</p>
+                </div>
+                <div class="pipeline-step">
+                    <div class="step-number">3</div>
+                    <h3>Deploy</h3>
+                    <p>Deploy to production (master only)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section class="tech-stack" id="tech">
+        <div class="tech-container">
+            <h2 class="section-title">Technology Stack</h2>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <div class="tech-icon">🔧</div>
+                    <h4>Jenkins</h4>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">🐳</div>
+                    <h4>Docker</h4>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">📚</div>
+                    <h4>Ansible</h4>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">🌿</div>
+                    <h4>Git/GitHub</h4>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">🐧</div>
+                    <h4>Linux</h4>
+                </div>
+                <div class="tech-item">
+                    <div class="tech-icon">☕</div>
+                    <h4>Java</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Status Section -->
+    <section class="status" id="status">
+        <h2 class="section-title">Pipeline Status</h2>
+        <div class="status-grid">
+            <div class="status-card">
+                <div class="status-header">
+                    <h3>Master Branch</h3>
+                    <span class="status-badge badge-success">✓ Deployed</span>
+                </div>
+                <p><strong>Last Build:</strong> #42</p>
+                <p><strong>Status:</strong> Success</p>
+                <p><strong>Deployment:</strong> Production</p>
+                <p><strong>URL:</strong> http://localhost:80</p>
+            </div>
+            <div class="status-card">
+                <div class="status-header">
+                    <h3>Develop Branch</h3>
+                    <span class="status-badge badge-running">● Testing</span>
+                </div>
+                <p><strong>Last Build:</strong> #38</p>
+                <p><strong>Status:</strong> Success</p>
+                <p><strong>Deployment:</strong> None</p>
+                <p><strong>Action:</strong> Test Only</p>
+            </div>
+            <div class="status-card">
+                <div class="status-header">
+                    <h3>System Health</h3>
+                    <span class="status-badge badge-success">✓ Healthy</span>
+                </div>
+                <p><strong>Container:</strong> Running</p>
+                <p><strong>CPU Usage:</strong> 12%</p>
+                <p><strong>Memory:</strong> 256 MB</p>
+                <p><strong>Uptime:</strong> 15 days</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Abode Software</h3>
+                <p>Leading enterprise software solutions with cutting-edge DevOps practices and automated deployment pipelines.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#pipeline">Pipeline</a></li>
+                    <li><a href="#tech">Tech Stack</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">GitHub Repository</a></li>
+                    <li><a href="#">Jenkins Dashboard</a></li>
+                    <li><a href="#">Docker Hub</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul>
+                    <li><a href="mailto:devops@abode.com">devops@abode.com</a></li>
+                    <li><a href="#">Support Portal</a></li>
+                    <li><a href="#">Slack Community</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Abode Software. All rights reserved. | Powered by DevOps Excellence</p>
+        </div>
+    </footer>
+
+    <!-- Build Status Indicator -->
+    <div class="build-status">
+        <div class="status-indicator"></div>
+        <div>
+            <strong>Pipeline Status</strong><br>
+            <small>All Systems Operational</small>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Update timestamp dynamically
+        function updateTimestamp() {
+            const now = new Date();
+            const options = { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            };
+            document.querySelectorAll('.timestamp').forEach(el => {
+                el.textContent = now.toLocaleDateString('en-US', options);
+            });
+        }
+        
+        updateTimestamp();
+        setInterval(updateTimestamp, 60000); // Update every minute
+    </script>
+</body>
+</html>
