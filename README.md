@@ -173,7 +173,7 @@ devops-capstone/
 #### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/devops-capstone.git
+git clone https://github.com/himanshu2604/devops-capstone.git
 cd devops-capstone
 ```
 
