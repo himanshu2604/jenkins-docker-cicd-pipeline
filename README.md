@@ -465,8 +465,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 👨‍💻 Author
 
 **Your Name**
-- GitHub: [@your](https://github.com/yourusername)
-- LinkedIn: [Your LinkedIn](https://linkedin.com/in/yourprofile)
+- GitHub: [Himasnhu2604](https://github.com/himanshu2604)
+- LinkedIn: [Himanshu Nehete](www.linkedin.com/in/himanshu-nehete)
 - Email: himanshunehete2025@gmail.com
 
 ---
@@ -482,10 +482,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📊 Project Stats
 
-![GitHub last commit](https://img.shields.io/github/last-commit/yourusername/devops-capstone)
-![GitHub issues](https://img.shields.io/github/issues/yourusername/devops-capstone)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/yourusername/devops-capstone)
-![GitHub stars](https://img.shields.io/github/stars/yourusername/devops-capstone?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/himanshu2604/devops-capstone)
+![GitHub issues](https://img.shields.io/github/issues/himanshu2604/devops-capstone)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/himanshu2604/devops-capstone)
+![GitHub stars](https://img.shields.io/github/stars/himanshu2604/devops-capstone?style=social)
 
 ---
 
@@ -495,6 +495,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Built with ❤️ using DevOps best practices**
 
-[Report Bug](https://github.com/yourusername/devops-capstone/issues) • [Request Feature](https://github.com/yourusername/devops-capstone/issues)
+[Report Bug](https://github.com/himanshu2604/devops-capstone/issues) • [Request Feature](https://github.com/himanshu2604/devops-capstone/issues)
 
 </div>
