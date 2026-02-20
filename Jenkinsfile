@@ -28,10 +28,12 @@ pipeline {
                 '''
                 
                 bat '''
-                    echo Building image...
+                    echo Building Docker image...
                     docker build -t %DOCKER_IMAGE%:latest .
                     echo Build complete!
                 '''
+                
+                bat 'echo Listing images: && docker images'
             }
         }
         
@@ -46,7 +48,8 @@ pipeline {
                 sleep 10
                 
                 bat 'docker ps'
-                bat 'curl -f http://localhost:%APP_PORT% || exit /b 0'
+                
+                bat 'curl -f http://localhost:%APP_PORT%'
                 
                 echo "Tests passed!"
             }
@@ -62,7 +65,7 @@ pipeline {
             steps {
                 echo "=========================================="
                 echo "Deployed to Production!"
-                echo "URL: http://localhost:%APP_PORT%"
+                echo "URL: http://localhost:80"
                 echo "=========================================="
                 bat 'docker ps'
             }
@@ -83,12 +86,14 @@ pipeline {
     
     post {
         success {
+            echo "=========================================="
             echo "Pipeline SUCCESS!"
+            echo "=========================================="
         }
         failure {
             echo "Pipeline FAILED!"
-            bat 'docker stop %CONTAINER_NAME% 2>nul || echo Stopped'
-            bat 'docker rm %CONTAINER_NAME% 2>nul || echo Removed'
+            bat 'docker stop %CONTAINER_NAME% 2>nul || echo Already stopped'
+            bat 'docker rm %CONTAINER_NAME% 2>nul || echo Already removed'
         }
     }
 }
