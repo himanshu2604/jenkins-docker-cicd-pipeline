@@ -20,32 +20,32 @@ pipeline {
             }
         }
         
-        stage('Build') {
-            steps {
-                script {
-                    echo "=========================================="
-                    echo "Stage: Build - Building Docker Image"
-                    echo "=========================================="
-                }
-                
-                bat '''
-                    echo Cleaning up existing containers...
-                    docker stop %CONTAINER_NAME% 2>nul || echo Container not running
-                    docker rm %CONTAINER_NAME% 2>nul || echo Container not found
-                '''
-                
-                bat '''
-                    echo .
-                    echo Building Docker image...
-                    docker build -t %DOCKER_IMAGE%:%BUILD_NUMBER% .
-                    if errorlevel 1 exit /b 1
-                    docker tag %DOCKER_IMAGE%:%BUILD_NUMBER% %DOCKER_IMAGE%:latest
-                    echo Docker image built successfully!
-                '''
-                
-                bat 'docker images'
+stage('Build') {
+        steps {
+            script {
+                echo "=========================================="
+                echo "Stage: Build - Building Docker Image"
+                echo "=========================================="
             }
+            
+            bat '''
+                echo Cleaning up existing containers...
+                docker stop %CONTAINER_NAME% 2>nul || echo Container not running
+                docker rm %CONTAINER_NAME% 2>nul || echo Container not found
+            '''
+            
+            bat '''
+                echo.
+                echo Building Docker image...
+                docker build -t %DOCKER_IMAGE%:%BUILD_NUMBER% .
+                if errorlevel 1 exit /b 1
+                docker tag %DOCKER_IMAGE%:%BUILD_NUMBER% %DOCKER_IMAGE%:latest
+                echo Docker image built successfully!
+            '''
+            
+            bat 'docker images'
         }
+    }
         
         stage('Test') {
             steps {
