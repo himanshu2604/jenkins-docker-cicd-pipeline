@@ -22,6 +22,12 @@ pipeline {
                 echo '=========================================='
 
                 bat '''
+                echo Cleaning up existing containers...
+                docker stop %CONTAINER_NAME% 2>nul || echo Container not running
+                docker rm %CONTAINER_NAME% 2>nul || echo Container not found
+                '''
+
+                bat '''
                     echo Building Docker image...
                     docker build -t %DOCKER_IMAGE%:latest .
                     echo Build complete!
