@@ -5,7 +5,6 @@ pipeline {
         DOCKER_IMAGE = "hshar/webapp"
         CONTAINER_NAME = "abode-webapp"
         APP_PORT = "80"
-        GIT_BRANCH = "${env.BRANCH_NAME}"
     }
     
     stages {
@@ -14,8 +13,7 @@ pipeline {
                 script {
                     echo "=========================================="
                     echo "Stage: Checkout"
-                    echo "Branch: ${GIT_BRANCH}"
-                    echo "Build Number: ${BUILD_NUMBER}"
+                    echo "Branch: ${env.BRANCH_NAME}"
                     echo "=========================================="
                 }
                 checkout scm
@@ -29,23 +27,23 @@ pipeline {
                     echo "Stage: Build - Building Docker Image"
                     echo "=========================================="
                     
-                    // Clean up existing containers with the same name
-                    sh '''
-                        echo "Cleaning up existing containers..."
-                        docker stop ${CONTAINER_NAME} 2>/dev/null || true
-                        docker rm ${CONTAINER_NAME} 2>/dev/null || true
+                    // Clean up existing containers
+                    bat '''
+                        echo Cleaning up existing containers...
+                        docker stop %CONTAINER_NAME% 2>nul || echo Container not running
+                        docker rm %CONTAINER_NAME% 2>nul || echo Container not found
                     '''
                     
                     // Build Docker image
-                    sh '''
-                        echo "Building Docker image..."
-                        docker build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} .
-                        docker tag ${DOCKER_IMAGE}:${BUILD_NUMBER} ${DOCKER_IMAGE}:latest
-                        echo "Docker image built successfully!"
+                    bat '''
+                        echo Building Docker image...
+                        docker build -t %DOCKER_IMAGE%:%BUILD_NUMBER% .
+                        docker tag %DOCKER_IMAGE%:%BUILD_NUMBER% %DOCKER_IMAGE%:latest
+                        echo Docker image built successfully!
                     '''
                     
-                    // List Docker images
-                    sh 'docker images | grep ${DOCKER_IMAGE}'
+                    // List images
+                    bat 'docker images | findstr %DOCKER_IMAGE%'
                 }
             }
         }
@@ -58,56 +56,45 @@ pipeline {
                     echo "=========================================="
                     
                     // Run container for testing
-                    sh '''
-                        echo "Starting container for testing..."
-                        docker run -d \
-                            --name ${CONTAINER_NAME} \
-                            -p ${APP_PORT}:80 \
-                            ${DOCKER_IMAGE}:latest
+                    bat '''
+                        echo Starting container for testing...
+                        docker run -d --name %CONTAINER_NAME% -p %APP_PORT%:80 %DOCKER_IMAGE%:latest
                     '''
                     
                     // Wait for container to be ready
                     echo "Waiting for container to be ready..."
                     sleep(time: 10, unit: 'SECONDS')
                     
-                    // Check if container is running
-                    sh '''
-                        echo "Checking container status..."
-                        docker ps | grep ${CONTAINER_NAME}
-                    '''
+                    // Check container status
+                    bat 'docker ps | findstr %CONTAINER_NAME%'
                     
-                    // Run basic tests
-                    sh '''
-                        echo "Running tests..."
+                    // Run tests using PowerShell (since test.sh won't work directly on Windows)
+                    bat '''
+                        echo Running tests...
                         
-                        # Test 1: Check if container is running
-                        if [ "$(docker ps -q -f name=${CONTAINER_NAME})" ]; then
-                            echo "✓ Test 1 Passed: Container is running"
-                        else
-                            echo "✗ Test 1 Failed: Container is not running"
-                            exit 1
-                        fi
+                        REM Test 1: Check if container is running
+                        docker ps | findstr %CONTAINER_NAME% && (
+                            echo PASS: Container is running
+                        ) || (
+                            echo FAIL: Container is not running
+                            exit /b 1
+                        )
                         
-                        # Test 2: Check if application is accessible
-                        HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:${APP_PORT})
-                        if [ $HTTP_CODE -eq 200 ]; then
-                            echo "✓ Test 2 Passed: Application is accessible (HTTP $HTTP_CODE)"
-                        else
-                            echo "✗ Test 2 Failed: Application returned HTTP $HTTP_CODE"
-                            exit 1
-                        fi
+                        REM Test 2: Check if application is accessible
+                        curl -s -o nul -w "%%{http_code}" http://localhost:%APP_PORT% > http_code.txt
+                        set /p HTTP_CODE=<http_code.txt
+                        if "%HTTP_CODE%"=="200" (
+                            echo PASS: Application is accessible ^(HTTP 200^)
+                        ) else (
+                            echo FAIL: Application returned HTTP %HTTP_CODE%
+                            exit /b 1
+                        )
+                        del http_code.txt
                         
-                        # Test 3: Check container logs for errors
-                        if docker logs ${CONTAINER_NAME} 2>&1 | grep -i "error" > /dev/null; then
-                            echo "⚠ Warning: Errors found in container logs"
-                        else
-                            echo "✓ Test 3 Passed: No errors in container logs"
-                        fi
-                        
-                        echo ""
-                        echo "=========================================="
-                        echo "All Tests Passed Successfully! ✓"
-                        echo "=========================================="
+                        echo.
+                        echo ==========================================
+                        echo All Tests Passed Successfully!
+                        echo ==========================================
                     '''
                 }
             }
@@ -124,25 +111,24 @@ pipeline {
                 script {
                     echo "=========================================="
                     echo "Stage: Deploy to Production"
-                    echo "Branch: ${GIT_BRANCH}"
                     echo "=========================================="
                     
-                    sh '''
-                        echo "Deploying to production environment..."
-                        echo "Container is already running from test stage"
-                        echo ""
-                        echo "Application Details:"
-                        echo "-------------------"
-                        echo "Container Name: ${CONTAINER_NAME}"
-                        echo "Port: ${APP_PORT}"
-                        echo "Image: ${DOCKER_IMAGE}:${BUILD_NUMBER}"
-                        echo ""
-                        docker ps | grep ${CONTAINER_NAME}
-                        echo ""
-                        echo "=========================================="
-                        echo "✓ Production Deployment Successful!"
-                        echo "Application URL: http://localhost:${APP_PORT}"
-                        echo "=========================================="
+                    bat '''
+                        echo Deploying to production...
+                        echo Container is running from test stage
+                        echo.
+                        echo Application Details:
+                        echo -------------------
+                        echo Container Name: %CONTAINER_NAME%
+                        echo Port: %APP_PORT%
+                        echo Image: %DOCKER_IMAGE%:%BUILD_NUMBER%
+                        echo.
+                        docker ps | findstr %CONTAINER_NAME%
+                        echo.
+                        echo ==========================================
+                        echo Production Deployment Successful!
+                        echo Application URL: http://localhost:%APP_PORT%
+                        echo ==========================================
                     '''
                 }
             }
@@ -158,18 +144,18 @@ pipeline {
                     echo "Stage: Cleanup - Develop Branch"
                     echo "=========================================="
                     
-                    sh '''
-                        echo "This is a develop branch - not deploying to production"
-                        echo "Cleaning up test environment..."
+                    bat '''
+                        echo This is develop branch - not deploying to production
+                        echo Cleaning up test environment...
                         
-                        docker stop ${CONTAINER_NAME}
-                        docker rm ${CONTAINER_NAME}
+                        docker stop %CONTAINER_NAME%
+                        docker rm %CONTAINER_NAME%
                         
-                        echo ""
-                        echo "=========================================="
-                        echo "✓ Cleanup Completed"
-                        echo "Note: Changes NOT deployed to production"
-                        echo "=========================================="
+                        echo.
+                        echo ==========================================
+                        echo Cleanup Completed
+                        echo Note: Changes NOT deployed to production
+                        echo ==========================================
                     '''
                 }
             }
@@ -181,53 +167,21 @@ pipeline {
             script {
                 echo ""
                 echo "╔════════════════════════════════════════╗"
-                echo "║   PIPELINE EXECUTED SUCCESSFULLY! ✓    ║"
+                echo "║   PIPELINE EXECUTED SUCCESSFULLY!      ║"
                 echo "╚════════════════════════════════════════╝"
-                echo ""
-                echo "Build Summary:"
-                echo "-------------"
-                echo "Build Number: ${BUILD_NUMBER}"
-                echo "Branch: ${GIT_BRANCH}"
-                echo "Status: SUCCESS"
-                
-                if (env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'main') {
-                    echo "Deployment: PRODUCTION"
-                    echo "URL: http://localhost:${APP_PORT}"
-                } else {
-                    echo "Deployment: NONE (develop branch)"
-                }
-                echo ""
             }
         }
-        
         failure {
             script {
                 echo ""
                 echo "╔════════════════════════════════════════╗"
-                echo "║      PIPELINE FAILED! ✗                ║"
+                echo "║         PIPELINE FAILED!               ║"
                 echo "╚════════════════════════════════════════╝"
-                echo ""
-                echo "Cleaning up failed deployment..."
                 
-                sh '''
-                    docker stop ${CONTAINER_NAME} 2>/dev/null || true
-                    docker rm ${CONTAINER_NAME} 2>/dev/null || true
+                bat '''
+                    docker stop %CONTAINER_NAME% 2>nul || echo Container already stopped
+                    docker rm %CONTAINER_NAME% 2>nul || echo Container already removed
                 '''
-                
-                echo "Please check the console output for errors"
-                echo ""
-            }
-        }
-        
-        always {
-            script {
-                echo ""
-                echo "=========================================="
-                echo "Pipeline Execution Completed"
-                echo "Time: ${new Date()}"
-                echo "Duration: ${currentBuild.durationString}"
-                echo "=========================================="
-                echo ""
             }
         }
     }
