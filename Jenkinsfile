@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = "hshar/webapp"
         CONTAINER_NAME = "abode-webapp"
-        APP_PORT = "80"
+        APP_PORT = "8081"
     }
     
     stages {
@@ -65,7 +65,7 @@ pipeline {
             steps {
                 echo "=========================================="
                 echo "Deployed to Production!"
-                echo "URL: http://localhost:80"
+                echo "URL: http://localhost:8081"
                 echo "=========================================="
                 bat 'docker ps'
             }
