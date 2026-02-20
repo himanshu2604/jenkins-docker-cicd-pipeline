@@ -35,7 +35,7 @@ pipeline {
                 '''
                 
                 bat '''
-                    echo.
+                    echo .
                     echo Building Docker image...
                     docker build -t %DOCKER_IMAGE%:%BUILD_NUMBER% .
                     if errorlevel 1 exit /b 1
