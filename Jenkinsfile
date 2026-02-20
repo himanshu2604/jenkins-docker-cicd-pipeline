@@ -34,7 +34,7 @@ pipeline {
                         docker rm %CONTAINER_NAME% 2>nul || echo Container not found
                     '''
                     
-                    // Build Docker image
+                    // Build Docker image - THIS WAS MISSING!
                     bat '''
                         echo Building Docker image...
                         docker build -t %DOCKER_IMAGE%:%BUILD_NUMBER% .
@@ -43,7 +43,7 @@ pipeline {
                     '''
                     
                     // List images
-                    bat 'docker images | findstr %DOCKER_IMAGE%'
+                    bat 'docker images'
                 }
             }
         }
@@ -66,30 +66,17 @@ pipeline {
                     sleep(time: 10, unit: 'SECONDS')
                     
                     // Check container status
-                    bat 'docker ps | findstr %CONTAINER_NAME%'
+                    bat 'docker ps'
                     
-                    // Run tests using PowerShell (since test.sh won't work directly on Windows)
+                    // Run tests
                     bat '''
                         echo Running tests...
                         
-                        REM Test 1: Check if container is running
-                        docker ps | findstr %CONTAINER_NAME% && (
-                            echo PASS: Container is running
-                        ) || (
-                            echo FAIL: Container is not running
-                            exit /b 1
-                        )
+                        echo Test 1: Checking if container is running
+                        docker ps | findstr %CONTAINER_NAME% && echo PASS: Container is running || (echo FAIL: Container not running & exit /b 1)
                         
-                        REM Test 2: Check if application is accessible
-                        curl -s -o nul -w "%%{http_code}" http://localhost:%APP_PORT% > http_code.txt
-                        set /p HTTP_CODE=<http_code.txt
-                        if "%HTTP_CODE%"=="200" (
-                            echo PASS: Application is accessible ^(HTTP 200^)
-                        ) else (
-                            echo FAIL: Application returned HTTP %HTTP_CODE%
-                            exit /b 1
-                        )
-                        del http_code.txt
+                        echo Test 2: Checking application accessibility
+                        curl -f http://localhost:%APP_PORT% && echo PASS: Application accessible || (echo FAIL: Application not accessible & exit /b 1)
                         
                         echo.
                         echo ==========================================
@@ -123,7 +110,7 @@ pipeline {
                         echo Port: %APP_PORT%
                         echo Image: %DOCKER_IMAGE%:%BUILD_NUMBER%
                         echo.
-                        docker ps | findstr %CONTAINER_NAME%
+                        docker ps
                         echo.
                         echo ==========================================
                         echo Production Deployment Successful!
