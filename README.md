@@ -116,6 +116,7 @@ devops-capstone/
 ├── docs/
 │   ├── setup-guide.md          # Detailed setup instructions
 │   ├── troubleshooting.md      # Common issues & solutions
+│   ├── Architecture.png        # Main Architecture
 │   ├── pipeline-config.md      # Pipeline Configurations
 │   └── windows-quickstart.md   # Windows-specific setup
 │

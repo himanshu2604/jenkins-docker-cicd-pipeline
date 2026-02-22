@@ -13,7 +13,7 @@ NC='\033[0m' # No Color
 
 # Configuration
 CONTAINER_NAME="abode-webapp"
-APP_PORT="80"
+APP_PORT="8081"
 TEST_URL="http://localhost:${APP_PORT}"
 
 echo "=========================================="
