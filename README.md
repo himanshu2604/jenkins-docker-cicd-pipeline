@@ -432,7 +432,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👨‍💻 Author
 
-**Your Name**
+**Himanshu Nitin Nehete**
 - GitHub: [Himasnhu2604](https://github.com/himanshu2604)
 - LinkedIn: [Himanshu Nehete](www.linkedin.com/in/himanshu-nehete)
 - Email: himanshunehete2025@gmail.com
