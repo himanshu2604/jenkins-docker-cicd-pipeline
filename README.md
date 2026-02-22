@@ -49,39 +49,7 @@ This project implements a **complete DevOps lifecycle** for Abode Software's web
 
 ## 🏗️ Architecture
 
-```
-┌─────────────┐         ┌─────────────┐         ┌─────────────┐
-│             │         │             │         │             │
-│  Developer  │────────▶│   GitHub    │────────▶│   Jenkins   │
-│             │  Push   │ Repository  │ Webhook │   Server    │
-└─────────────┘         └─────────────┘         └──────┬──────┘
-                                                        │
-                                                        │ Trigger
-                                                        ▼
-                        ┌───────────────────────────────────────┐
-                        │       Jenkins Pipeline                │
-                        │                                       │
-                        │  ┌────────┐  ┌────────┐  ┌────────┐ │
-                        │  │ Build  │─▶│  Test  │─▶│  Deploy│ │
-                        │  └────────┘  └────────┘  └────────┘ │
-                        └───────────────────┬───────────────────┘
-                                            │
-                                            ▼
-                        ┌───────────────────────────────────────┐
-                        │      Docker Container                 │
-                        │  ┌─────────────────────────────────┐  │
-                        │  │   Web Application               │  │
-                        │  │   (hshar/webapp)                │  │
-                        │  │   Port: 80                      │  │
-                        │  └─────────────────────────────────┘  │
-                        └───────────────────────────────────────┘
-                                            │
-                                            ▼
-                                    ┌──────────────┐
-                                    │  Production  │
-                                    │  Environment │
-                                    └──────────────┘
-```
+<img width="2126" height="822" alt="diagram-export-2-22-2026-11_11_38-AM" src="https://github.com/user-attachments/assets/0d881905-b8b7-4251-8164-d5cbf109f459" />
 
 ---
 
@@ -173,8 +141,8 @@ devops-capstone/
 #### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/himanshu2604/devops-capstone.git
-cd devops-capstone
+git clone https://github.com/himanshu2604/jenkins-devops-cicd-pipeline.git
+cd jenkins-devops-cicd-pipeline
 ```
 
 #### 2️⃣ Setup Environment (Using Ansible)
@@ -223,7 +191,7 @@ docker run -d \
    - **Pipeline**:
      - Definition: Pipeline script from SCM
      - SCM: Git
-     - Repository URL: `https://github.com/yourusername/devops-capstone.git`
+     - Repository URL: `https://github.com/himanshu2604/jenkins-devops-cicd-pipeline.git`
      - Branches: `*/master` and `*/develop`
      - Script Path: `Jenkinsfile`
 
@@ -278,7 +246,7 @@ git push origin develop
 ```
 IF branch == master:
    → Keep container running (PRODUCTION)
-   → Application available on port 80
+   → Application available on port 8081
    
 IF branch == develop:
    → Stop and remove container (TEST ONLY)
@@ -338,7 +306,7 @@ Build Number: #42
 Branch: master
 Status: SUCCESS
 Deployment: PRODUCTION
-URL: http://localhost:80
+URL: http://localhost:8081
 ```
 
 ### Test Results
@@ -378,7 +346,7 @@ pipeline {
 FROM hshar/webapp
 WORKDIR /var/www/html
 COPY . /var/www/html/
-EXPOSE 80
+EXPOSE 8081
 CMD ["apachectl", "-D", "FOREGROUND"]
 ```
 
@@ -404,10 +372,10 @@ docker exec -u root jenkins usermod -aG docker jenkins
 docker restart jenkins
 ```
 
-**Issue**: Port 80 already in use
+**Issue**: Port 81 already in use
 ```bash
 # Solution: Use different port
-docker run -d --name abode-webapp -p 8081:80 hshar/webapp:latest
+docker run -d --name abode-webapp -p 8082:80 hshar/webapp:latest
 ```
 
 **Issue**: Webhook not triggering
