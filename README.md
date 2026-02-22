@@ -19,11 +19,16 @@ Complete CI/CD pipeline with automated build, test, and deployment workflows usi
 
 ---
 
-<p align="center">
-  <i>Complete CI/CD pipeline with automated build, test, and deployment workflows</i>
-</p>
 
-</div>
+## 🌐 Live Demo
+
+**🔗 Live Application:**
+
+Experience the deployed application built through our automated CI/CD pipeline!
+
+[![Visit Live Demo](https://img.shields.io/badge/🌐_Visit-Live_Demo-success?style=for-the-badge)](https://himanshu2604.github.io/jenkins-docker-cicd-pipeline/)
+
+---
 
 <br>
 
@@ -66,6 +71,16 @@ This project implements a **complete DevOps lifecycle** for Abode Software's web
 - Automate build, test, and deployment processes
 - Ensure code quality through automated testing
 - Enable continuous integration and continuous deployment (CI/CD)
+
+---
+
+## 🌐 Live Demo
+
+**🔗 Live Application:** https://himanshu2604.github.io/jenkins-docker-cicd-pipeline/
+
+Experience the deployed application built through our automated CI/CD pipeline!
+
+[![Visit Live Demo](https://img.shields.io/badge/🌐_Visit-Live_Demo-success?style=for-the-badge)](https://himanshu2604.github.io/jenkins-docker-cicd-pipeline/)
 
 ---
 
