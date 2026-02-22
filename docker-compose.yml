@@ -1,0 +1,66 @@
+version: '3.8'
+
+###############################################
+# Docker Compose Configuration
+# Purpose: Define and run multi-container Docker applications
+###############################################
+
+services:
+  # Web Application Service
+  webapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: abode-webapp
+    ports:
+      - "8081:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - devops-network
+    environment:
+      - ENVIRONMENT=production
+      - APP_NAME=Abode Software
+    labels:
+      - "com.abode.description=Abode Software Web Application"
+      - "com.abode.version=1.0"
+
+  # Jenkins Service (Optional - for complete setup)
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    privileged: true
+    user: root
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./:/var/jenkins_workspace
+    restart: unless-stopped
+    networks:
+      - devops-network
+    environment:
+      - JENKINS_OPTS=--prefix=/jenkins
+    labels:
+      - "com.abode.description=Jenkins CI/CD Server"
+
+# Named volumes for data persistence
+volumes:
+  jenkins_home:
+    driver: local
+    labels:
+      - "com.abode.description=Jenkins Home Directory"
+
+# Custom network for inter-container communication
+networks:
+  devops-network:
+    driver: bridge
+    labels:
+      - "com.abode.description=DevOps Network"
