@@ -9,7 +9,7 @@
 ![Ansible](https://img.shields.io/badge/Ansible-EE0000?logo=ansible&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-Production%20Ready-success)
 
-**[🌐 Live Demo](https://himanshu2604.github.io/jenkins-docker-cicd-pipeline/)** • **[📖 Documentation](docs/)** • **[⚙️ Setup Guide](docs/setup-guide.md)**
+**[🌐 Live Demo](https://himanshu2604.github.io/jenkins-docker-cicd-pipeline/)** • **[📖 Documentation](Docs/)** • **[⚙️ Setup Guide](Docs/setup-guide.md)**
 
 <p align="center">
 Complete CI/CD pipeline with automated build, test, and deployment workflows using Docker containerization and Jenkins orchestration.
@@ -134,6 +134,7 @@ jenkins-docker-cicd-pipeline/
 ├── docker-compose.yml          # Multi-container orchestration
 ├── ansible-playbook.yml        # Environment setup automation
 ├── test.sh                     # Automated test script
+├── Screenshots/
 │
 ├── docs/
 │   ├── setup-guide.md          # Detailed setup instructions
@@ -388,16 +389,16 @@ ngrok http 8080
 # Use ngrok URL in GitHub webhook
 ```
 
-For more solutions, see [Troubleshooting Guide](docs/troubleshooting-guide.md)
+For more solutions, see [Troubleshooting Guide](Docs/troubleshooting-guide.md)
 
 ---
 
 ## 📚 Documentation
 
-- [Complete Setup Guide](docs/setup-guide.md)
-- [Windows Quick Start](docs/windows-quick-start.md)
-- [Troubleshooting Guide](docs/troubleshooting-guide.md)
-- [Pipeline Configuration](docs/pipeline-config.md)
+- [Complete Setup Guide](Docs/setup-guide.md)
+- [Windows Quick Start](Docs/windows-quick-start.md)
+- [Troubleshooting Guide](Docs/troubleshooting-guide.md)
+- [Pipeline Configuration](Docs/pipeline-config.md)
 
 ---
 
