@@ -116,6 +116,7 @@ devops-capstone/
 ├── docs/
 │   ├── setup-guide.md          # Detailed setup instructions
 │   ├── troubleshooting.md      # Common issues & solutions
+│   ├── pipeline-config.md      # Pipeline Configurations
 │   └── windows-quickstart.md   # Windows-specific setup
 │
 ├── .gitignore                  # Git ignore rules
@@ -392,8 +393,8 @@ For more solutions, see [Troubleshooting Guide](docs/troubleshooting.md)
 ## 📚 Documentation
 
 - [Complete Setup Guide](docs/setup-guide.md)
-- [Windows Quick Start](docs/windows-quickstart.md)
-- [Troubleshooting Guide](docs/troubleshooting.md)
+- [Windows Quick Start](docs/windows-quick-start.md)
+- [Troubleshooting Guide](docs/troubleshooting-guide.md)
 - [Pipeline Configuration](docs/pipeline-config.md)
 
 ---
