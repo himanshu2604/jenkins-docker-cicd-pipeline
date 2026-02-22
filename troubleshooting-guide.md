@@ -38,7 +38,7 @@ apt-get install -y docker-ce-cli
 ### Issue 2: Port Already in Use
 
 **Symptoms:**
-- Error: "Bind for 0.0.0.0:80 failed: port is already allocated"
+- Error: "Bind for 0.0.0.0:81 failed: port is already allocated"
 - Jenkins or application won't start
 
 **Solution A: Find and stop conflicting process (Windows)**
@@ -53,11 +53,11 @@ taskkill /PID <PID> /F
 **Solution B: Use a different port**
 ```bash
 # Modify docker run command
-docker run -d --name abode-webapp -p 8081:80 hshar/webapp:latest
+docker run -d --name abode-webapp -p 8082:80 hshar/webapp:latest
 
 # Or modify docker-compose.yml
 ports:
-  - "8081:80"  # Change from 80:80
+  - "8082:80"  # Change from 8081:80
 ```
 
 ---
@@ -162,10 +162,10 @@ docker ps
 **Solution D: Test manually**
 ```bash
 # Run container manually
-docker run -d --name test-webapp -p 80:80 hshar/webapp:latest
+docker run -d --name test-webapp -p 8081:80 hshar/webapp:latest
 
 # Test access
-curl http://localhost:80
+curl http://localhost:8081
 
 # Check logs
 docker logs test-webapp
@@ -224,7 +224,7 @@ RUN chown -R www-data:www-data /var/www/html
 
 **Solution B: Run container with correct user**
 ```bash
-docker run -d --name abode-webapp -p 80:80 --user www-data hshar/webapp:latest
+docker run -d --name abode-webapp -p 8081:80 --user www-data hshar/webapp:latest
 ```
 
 ---
@@ -413,13 +413,13 @@ docker restart jenkins
 ### Network Debugging
 ```bash
 # Test connection
-curl -v http://localhost:80
+curl -v http://localhost:8081
 
 # Check listening ports
 netstat -tulpn | grep LISTEN
 
 # Test from inside container
-docker exec abode-webapp curl http://localhost:80
+docker exec abode-webapp curl http://localhost:8081
 ```
 
 ---
