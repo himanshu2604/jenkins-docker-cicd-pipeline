@@ -1,16 +1,36 @@
-# 🚀 DevOps CI/CD Pipeline - Abode Software
+<div align="center">
 
-![DevOps](https://img.shields.io/badge/DevOps-Pipeline-blue)
-![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED?logo=docker)
-![Jenkins](https://img.shields.io/badge/Jenkins-CI%2FCD-D24939?logo=jenkins)
-![Ansible](https://img.shields.io/badge/Ansible-Automation-EE0000?logo=ansible)
+# 🚀 DevOps CI/CD Pipeline
+
+**Automated Build • Test • Deploy with Jenkins & Docker**
+
+![Jenkins](https://img.shields.io/badge/Jenkins-D24939?logo=jenkins&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
+![Ansible](https://img.shields.io/badge/Ansible-EE0000?logo=ansible&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-Production%20Ready-success)
 
-A complete **DevOps CI/CD pipeline** implementation featuring automated build, test, and deployment workflows with Docker containerization and Jenkins orchestration.
+**[🌐 Live Demo](https://himanshu2604.github.io/jenkins-docker-cicd-pipeline/)** • **[📖 Documentation](docs/)** • **[⚙️ Setup Guide](docs/setup-guide.md)**
+
+<p align="center">
+Complete CI/CD pipeline with automated build, test, and deployment workflows using Docker containerization and Jenkins orchestration.
+</p>
+
+</div>
 
 ---
 
+<p align="center">
+  <i>Complete CI/CD pipeline with automated build, test, and deployment workflows</i>
+</p>
+
+</div>
+
+<br>
+
 ## 📋 Table of Contents
+
+<details>
+<summary>Click to expand</summary>
 
 - [Overview](#overview)
 - [Architecture](#architecture)
@@ -24,6 +44,8 @@ A complete **DevOps CI/CD pipeline** implementation featuring automated build, t
 - [Troubleshooting](#troubleshooting)
 - [Contributing](#contributing)
 - [License](#license)
+
+</details>
 
 ---
 
@@ -105,7 +127,7 @@ This project implements a **complete DevOps lifecycle** for Abode Software's web
 ## 📁 Project Structure
 
 ```
-devops-capstone/
+jenkins-docker-cicd-pipeline/
 │
 ├── Jenkinsfile                 # Jenkins pipeline definition
 ├── Dockerfile                  # Docker container configuration
@@ -120,7 +142,6 @@ devops-capstone/
 │   ├── pipeline-config.md      # Pipeline Configurations
 │   └── windows-quickstart.md   # Windows-specific setup
 │
-├── .gitignore                  # Git ignore rules
 └── README.md                   # This file
 ```
 
@@ -297,32 +318,12 @@ git push origin feature/new-feature
 ## 📸 Screenshots
 
 ### Jenkins Pipeline Success
-```
-╔════════════════════════════════════════╗
-║   PIPELINE EXECUTED SUCCESSFULLY! ✓    ║
-╚════════════════════════════════════════╝
 
-Build Summary:
--------------
-Build Number: #42
-Branch: master
-Status: SUCCESS
-Deployment: PRODUCTION
-URL: http://localhost:8081
-```
+<img width="1920" height="1080" alt="Screenshot (83)" src="https://github.com/user-attachments/assets/6ddaca6d-e325-4cd0-b5c6-a8ae3c6e4283" />
 
 ### Test Results
-```
-========================================
-Test Summary
-========================================
-Tests Passed: 7
-Tests Failed: 0
 
-╔════════════════════════════════════════╗
-║   ALL TESTS PASSED SUCCESSFULLY! ✓     ║
-╚════════════════════════════════════════╝
-```
+<img width="1755" height="835" alt="Screenshot (3)" src="https://github.com/user-attachments/assets/923e4e50-a8cd-40f3-822e-010f769a987a" />
 
 ---
 
@@ -387,7 +388,7 @@ ngrok http 8080
 # Use ngrok URL in GitHub webhook
 ```
 
-For more solutions, see [Troubleshooting Guide](docs/troubleshooting.md)
+For more solutions, see [Troubleshooting Guide](docs/troubleshooting-guide.md)
 
 ---
 
@@ -452,10 +453,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📊 Project Stats
 
-![GitHub last commit](https://img.shields.io/github/last-commit/himanshu2604/devops-capstone)
-![GitHub issues](https://img.shields.io/github/issues/himanshu2604/devops-capstone)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/himanshu2604/devops-capstone)
-![GitHub stars](https://img.shields.io/github/stars/himanshu2604/devops-capstone?style=social)
+![GitHub last commit](https://img.shields.io/github/last-commit/himanshu2604/jenkins-docker-cicd-pipeline)
+![GitHub issues](https://img.shields.io/github/issues/himanshu2604/jenkins-docker-cicd-pipeline)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/himanshu2604/jenkins-docker-cicd-pipeline)
+![GitHub stars](https://img.shields.io/github/stars/himanshu2604/jenkins-docker-cicd-pipeline?style=social)
 
 ---
 
@@ -465,6 +466,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Built with ❤️ using DevOps best practices**
 
-[Report Bug](https://github.com/himanshu2604/devops-capstone/issues) • [Request Feature](https://github.com/himanshu2604/devops-capstone/issues)
+[Report Bug](https://github.com/himanshu2604/jenkins-docker-cicd-pipeline/issues) • [Request Feature](https://github.com/himanshu2604/jenkins-docker-cicd-pipeline/issues)
 
 </div>
