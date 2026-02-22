@@ -74,16 +74,6 @@ This project implements a **complete DevOps lifecycle** for Abode Software's web
 
 ---
 
-## 🌐 Live Demo
-
-**🔗 Live Application:** https://himanshu2604.github.io/jenkins-docker-cicd-pipeline/
-
-Experience the deployed application built through our automated CI/CD pipeline!
-
-[![Visit Live Demo](https://img.shields.io/badge/🌐_Visit-Live_Demo-success?style=for-the-badge)](https://himanshu2604.github.io/jenkins-docker-cicd-pipeline/)
-
----
-
 ## 🏗️ Architecture
 
 <img width="2126" height="822" alt="diagram-export-2-22-2026-11_11_38-AM" src="https://github.com/user-attachments/assets/0d881905-b8b7-4251-8164-d5cbf109f459" />
