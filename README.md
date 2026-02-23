@@ -136,7 +136,6 @@ jenkins-docker-cicd-pipeline/
 │
 ├── Jenkinsfile                 # Jenkins pipeline definition
 ├── Dockerfile                  # Docker container configuration
-├── docker-compose.yml          # Multi-container orchestration
 ├── ansible-playbook.yml        # Environment setup automation
 ├── test.sh                     # Automated test script
 ├── Screenshots/
