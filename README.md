@@ -37,18 +37,18 @@ Experience the deployed application built through our automated CI/CD pipeline!
 <details>
 <summary>Click to expand</summary>
 
-- [Overview](#overview)
-- [Architecture](#architecture)
-- [Features](#features)
-- [Technologies Used](#technologies-used)
-- [Project Structure](#project-structure)
-- [Getting Started](#getting-started)
-- [Pipeline Workflow](#pipeline-workflow)
-- [Git Branching Strategy](#git-branching-strategy)
-- [Screenshots](#screenshots)
-- [Troubleshooting](#troubleshooting)
-- [Contributing](#contributing)
-- [License](#license)
+- [Overview](#Overview)
+- [Architecture](#Architecture)
+- [Features](#Features)
+- [Technologies Used](#Technologies-Used)
+- [Project Structure](#Project-Structure)
+- [Getting Started](#Getting-Started)
+- [Pipeline Workflow](#Pipeline-Workflow)
+- [Git Branching Strategy](#Git-Branching-Strategy)
+- [Screenshots](#Screenshots)
+- [Troubleshooting](#Troubleshooting)
+- [Contributing](#Contributing)
+- [License](#License)
 
 </details>
 
